@@ -4,9 +4,11 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +26,6 @@ public class PropertyController {
 	@Autowired
 	PropertyServiceImpl propertyService;
 
-	// API endpoints for CRUD operations on entities of type Property
 	@PostMapping(value = "", headers = "Accept=application/com.company.app-v1+json")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void insert(@RequestBody Property property) {
@@ -44,12 +45,15 @@ public class PropertyController {
 		return propertyService.findById(id);
 	}
 
-	public void update(Property property) {
-		// TODO: Property attributes must be validated
+	@PutMapping(value = "", headers = "Accept=application/com.company.app-v1+json")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void update(@RequestBody Property property) {
 		propertyService.update(property);
 	}
 
-	public void delete(Long id) {
+	@DeleteMapping(value = "/{propertyId}", headers = "Accept=application/com.company.app-v1+json")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable("propertyId") Long id) {
 		propertyService.delete(id);
 	}
 

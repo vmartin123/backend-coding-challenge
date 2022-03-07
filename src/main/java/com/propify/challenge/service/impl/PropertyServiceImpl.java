@@ -56,18 +56,37 @@ public class PropertyServiceImpl implements PropertyService {
 		}
 	}
 
+	@Override
 	public void update(Property property) {
-		propertyService.update(property);
-		System.out.println("UPDATED: " + property.getId());
+		Optional<Property> propertyDb = propertyRepository.findById(property.getId());
+
+		if (propertyDb.isPresent()) {
+			propertyDb.get().setId(property.getId());
+			propertyDb.get().setType(property.getType());
+			propertyDb.get().setRentPrice(property.getRentPrice());
+			propertyDb.get().setAddress(property.getAddress());
+			propertyDb.get().setEmailAddress(property.getEmailAddress());
+			propertyDb.get().setCode(property.getCode());
+
+			propertyRepository.save(propertyDb.get());
+			System.out.println("UPDATED: " + property.getId());
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Property " + property.getId() + " not found");
+		}
 	}
 
+	@Override
 	public void delete(Long id) {
-		propertyService.delete(id);
-		System.out.println("DELETED: " + id);
+		Optional<Property> property = propertyRepository.findById(id);
+
+		if (property.isPresent()) {
+			propertyRepository.deleteById(id);
+			System.out.println("DELETED: " + id);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Property " + id + " not found");
+		}
 
 		alertService.sendPropertyDeletedAlert(id);
-		// TODO: Sending the alert should be non-blocking (asynchronous)
-		// Extra points for only sending the alert when/if the transaction is committed
 	}
 
 	public PropertyReport propertyReport() {
