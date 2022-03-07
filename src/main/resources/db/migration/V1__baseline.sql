@@ -18,3 +18,12 @@ CREATE TABLE property (
   CONSTRAINT address_id FOREIGN KEY (address_id) REFERENCES address (id),
   UNIQUE (address_id)
 );
+
+INSERT INTO address VALUES (1,'belgrano','chicago','IL','1200','CST');
+
+INSERT INTO property VALUES
+(1, '2022-03-06 09:27:03', 'TOWN_HOUSE',   1.11, NULL, 'vic@gmail.com','A1'),
+(2, '2022-03-06 09:27:03', 'MULTI_FAMILY', 2.22, NULL, 'vic@gmail.com','A1'),
+(3, '2022-03-06 09:27:03', 'CONDOMINIUM',  3.33, NULL, 'vic@gmail.com','A1'),
+(4, '2022-03-06 09:27:03', 'TOWN_HOUSE',   4.44, NULL, 'vic@gmail.com','A1'),
+(5, '2022-03-06 09:27:03', 'MULTI_FAMILY', 5.56, 1,    'vic@gmail.com','A1');

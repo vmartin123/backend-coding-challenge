@@ -11,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.propify.challenge.model.Property;
 import com.propify.challenge.model.PropertyReport;
 import com.propify.challenge.repository.PropertyRepository;
-import com.propify.challenge.service.AddressService;
 import com.propify.challenge.service.AlertService;
 import com.propify.challenge.service.PropertyService;
 
@@ -24,8 +23,7 @@ public class PropertyServiceImpl implements PropertyService {
 	@Autowired
 	PropertyRepository propertyRepository;
 
-	AddressService addressMapper;
-
+	@Autowired
 	AlertService alertService;
 
 	@Override
@@ -41,8 +39,9 @@ public class PropertyServiceImpl implements PropertyService {
 		System.out.println("CREATED: " + property.getId());
 	}
 
+	@Override
 	public Set<Property> search(String minRentPrice, String maxRentPrice) {
-		return propertyService.search(minRentPrice, maxRentPrice);
+		return propertyRepository.search(minRentPrice, maxRentPrice);
 	}
 
 	public Property findById(Long id) {
