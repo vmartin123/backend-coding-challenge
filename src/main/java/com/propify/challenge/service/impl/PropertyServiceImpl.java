@@ -1,6 +1,11 @@
 package com.propify.challenge.service.impl;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -11,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.propify.challenge.model.Property;
 import com.propify.challenge.model.PropertyReport;
+import com.propify.challenge.model.PropertyType;
 import com.propify.challenge.repository.PropertyRepository;
 import com.propify.challenge.service.AlertService;
 import com.propify.challenge.service.PropertyService;
@@ -26,6 +32,11 @@ public class PropertyServiceImpl implements PropertyService {
 
 	@Autowired
 	AlertService alertService;
+
+	@Override
+	public Set<Property> getProperties() {
+		return new HashSet<Property>(propertyRepository.findAll());
+	}
 
 	@Override
 	public void insert(Property property) {
@@ -89,22 +100,47 @@ public class PropertyServiceImpl implements PropertyService {
 		alertService.sendPropertyDeletedAlert(id);
 	}
 
+	@Override
 	public PropertyReport propertyReport() {
-		var allProperties = propertyService.search(null, null);
-		var propertyReport = new PropertyReport();
+		Collection<Property> properties = search(null, null);
+		PropertyReport propertyReport = new PropertyReport();
+
+		int totalProperties = properties.size();
+
+		HashMap<PropertyType, Integer> propertiesMap = new HashMap<>();
+		propertiesMap.put(PropertyType.SINGLE_FAMILY, 0);
+		propertiesMap.put(PropertyType.MULTI_FAMILY, 0);
+		propertiesMap.put(PropertyType.CONDOMINIUM, 0);
+		propertiesMap.put(PropertyType.TOWN_HOUSE, 0);
+
+		double averageRentPrice = 0;
+		int IllinoisTotal = 0;
+
+		for (Property property : properties) {
+			propertiesMap.put(property.getType(), propertiesMap.get(property.getType()) + 1);
+
+			if (property.getRentPrice() != 0) {
+				averageRentPrice = averageRentPrice + property.getRentPrice();
+			}
+
+			if (property.getAddress() != null && property.getAddress().getState().equals("IL")) {
+				IllinoisTotal++;
+			}
+		}
 
 		// Calculate total quantity
-		// propertyReport.totalQuantity =
+		propertyReport.setTotalQuantity(totalProperties);
 
 		// Calculate the quantity of each type, 0 if there is no properties.
-		// propertyReport.quantityPerType =
+		propertyReport.setQuantityPerType(propertiesMap);
 
 		// Calculate the average rent price (exclude the properties without rent price
 		// or with rent price = 0)
-		// propertyReport.averageRentPrice =
+		propertyReport.setAverageRentPrice(
+				new BigDecimal(averageRentPrice / totalProperties).setScale(2, RoundingMode.HALF_UP).doubleValue());
 
 		// Calculate the quantity of properties in the state of Illinois (IL)
-		// propertyReport.illinoisQuantity =
+		propertyReport.setIllinoisQuantity(IllinoisTotal);
 
 		return propertyReport;
 	}

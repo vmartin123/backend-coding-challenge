@@ -3,8 +3,11 @@ package com.propify.challenge.service;
 import java.util.Set;
 
 import com.propify.challenge.model.Property;
+import com.propify.challenge.model.PropertyReport;
 
 public interface PropertyService {
+
+	public Set<Property> getProperties();
 
 	public void insert(Property property);
 
@@ -15,5 +18,7 @@ public interface PropertyService {
 	public void update(Property property);
 
 	public void delete(Long id);
+
+	public PropertyReport propertyReport();
 
 }

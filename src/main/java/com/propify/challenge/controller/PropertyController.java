@@ -26,6 +26,12 @@ public class PropertyController {
 	@Autowired
 	PropertyServiceImpl propertyService;
 
+	@GetMapping(value = "", headers = "Accept=application/com.company.app-v1+json")
+	@ResponseStatus(HttpStatus.OK)
+	public Collection<Property> getProperties() {
+		return propertyService.getProperties();
+	}
+
 	@PostMapping(value = "", headers = "Accept=application/com.company.app-v1+json")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void insert(@RequestBody Property property) {
@@ -57,6 +63,8 @@ public class PropertyController {
 		propertyService.delete(id);
 	}
 
+	@GetMapping(value = "/report", headers = "Accept=application/com.company.app-v1+json")
+	@ResponseStatus(HttpStatus.OK)
 	public PropertyReport report() {
 		return propertyService.propertyReport();
 	}
