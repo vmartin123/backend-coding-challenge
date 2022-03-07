@@ -16,7 +16,7 @@ public class Property {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id; // must be null for INSERT and not null for UPDATE
+	private Long id; // must be null for INSERT and not null for UPDATE
 
 	@Column(name = "create_time")
 	private Date createTime;
@@ -35,11 +35,11 @@ public class Property {
 
 	private String code; // not null, only uppercase letters or numbers, 10 characters
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

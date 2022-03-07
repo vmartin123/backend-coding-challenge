@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,9 @@ public class PropertyController {
 		return propertyService.search(minRentPrice, maxRentPrice);
 	}
 
-	public Property findById(Long id) {
+	@GetMapping(value = "/{propertyId}", headers = "Accept=application/com.company.app-v1+json")
+	@ResponseStatus(HttpStatus.OK)
+	public Property findById(@PathVariable("propertyId") Long id) {
 		return propertyService.findById(id);
 	}
 

@@ -1,6 +1,7 @@
 package com.propify.challenge.service.impl;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,15 @@ public class PropertyServiceImpl implements PropertyService {
 		return propertyRepository.search(minRentPrice, maxRentPrice);
 	}
 
+	@Override
 	public Property findById(Long id) {
-		return propertyService.findById(id);
+		Optional<Property> property = propertyRepository.findById(id);
+
+		if (property.isPresent()) {
+			return propertyRepository.findById(id).get();
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Property " + id + " not found");
+		}
 	}
 
 	public void update(Property property) {
