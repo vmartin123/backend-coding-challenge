@@ -6,14 +6,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.propify.challenge.service.AddressService;
+import com.propify.challenge.service.AlertService;
+import com.propify.challenge.service.PropertyService;
+import com.propify.challenge.service.impl.PropertyServiceImpl;
+
 @ExtendWith(MockitoExtension.class)
 public class PropertyServiceTest {
 
-    PropertyService propertyService;
+    PropertyServiceImpl propertyService;
 
-    PropertyMapper propertyMapper;
+    PropertyService propertyMapper;
 
-    AddressMapper addressMapper;
+    AddressService addressMapper;
 
     AlertService alertService;
 

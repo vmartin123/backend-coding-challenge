@@ -2,6 +2,10 @@ package com.propify.challenge;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.propify.challenge.model.Property;
+import com.propify.challenge.model.PropertyType;
+import com.propify.challenge.service.PropertyService;
+
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +25,13 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 public class PropertyMapperTest {
 
     @Autowired
-    PropertyMapper propertyMapper;
+    PropertyService propertyMapper;
 
     @Test
     public void testInsert() {
         var property = new Property();
-        property.rentPrice = 3000.99;
-        property.type = PropertyType.MULTI_FAMILY;
+        property.setRentPrice(3000.99);
+        property.setType(PropertyType.MULTI_FAMILY);
 
         propertyMapper.insert(property);
 
@@ -36,7 +40,7 @@ public class PropertyMapperTest {
 
     @Test
     public void testFindById() {
-        var property = propertyMapper.findById(1);
+        var property = propertyMapper.findById(1l);
 
         assert property != null;
         // TODO: add assertions
